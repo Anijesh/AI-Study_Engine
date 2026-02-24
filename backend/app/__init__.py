@@ -4,6 +4,7 @@ from .extensions import db, jwt, bcrypt
 from app.routes.subject_routes import subject_bp
 from app.routes.topic_routes import topic_bp
 from app.routes.session_routes import session_bp
+from app.routes.quiz_routes import quiz_bp
 
 
 def create_app():
@@ -18,4 +19,5 @@ def create_app():
     app.register_blueprint(subject_bp)
     app.register_blueprint(topic_bp)
     app.register_blueprint(session_bp)
+    app.register_blueprint(quiz_bp)
     return app
