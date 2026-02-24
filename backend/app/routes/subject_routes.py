@@ -24,3 +24,27 @@ def get_subjects():
     usr_id = get_jwt_identity()
     subjects = SubjectService.get_subjects(usr_id)
     return jsonify([{"id": s.id, "name": s.name, "exam_date": s.exam_date.isoformat()} for s in subjects]), 200
+
+@subject_bp.route("/<int:subject_id>/generate-plan", methods=["POST"])
+@jwt_required()
+def generate_plan(subject_id):
+    user_id = get_jwt_identity()
+
+    try:
+        sessions = SubjectService.generate_plan(subject_id, user_id)
+
+        return jsonify([
+            {
+                "id": s.id,
+                "topic_id": s.topic_id,
+                "scheduled_date": s.scheduled_date.isoformat(),
+                "duration_minutes": s.duration_minutes,
+                "status": s.status.value
+            }
+            for s in sessions
+        ]), 201
+
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        return jsonify({"error": "An unexpected error occurred during plan generation"}), 500
