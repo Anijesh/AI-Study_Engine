@@ -56,10 +56,28 @@ def generate_quiz(subject_id,topic_id):
 
     try:
         quiz_data = TopicService.generate_quiz(topic_id, user_id)
-
         return jsonify(quiz_data.model_dump()), 200
-
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
     except Exception as e:
         return jsonify({"error": "Failed to generate quiz. Please try again."}), 500
+
+
+# Ask question
+@topic_bp.route("/<int:topic_id>/ask", methods=["POST"])
+@jwt_required()
+def ask_question(subject_id, topic_id):
+    user_id = get_jwt_identity()
+    data = request.get_json()
+    question = data.get("question")
+
+    if not question:
+        return jsonify({"error": "Question is required"}), 400
+
+    try:
+        answer = TopicService.solve_doubt(topic_id, question, user_id)
+        return jsonify(answer.model_dump()), 200
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 403
+    except Exception:
+        return jsonify({"error": "AI service is temporarily busy"}), 500

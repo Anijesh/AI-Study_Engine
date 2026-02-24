@@ -65,3 +65,18 @@ class TopicService:
         )
 
         return quiz
+    
+    @staticmethod
+    def solve_doubt(topic_id, question, user_id):
+        topic = (
+            Topic.query
+            .join(Topic.subject)
+            .filter(Topic.id == topic_id, Topic.subject.has(user_id=user_id))
+            .first()
+        )
+
+        if not topic:
+            raise ValueError("Access denied or topic not found")
+
+        agent = StudyAgent()
+        return agent.answer_doubt(topic.name, question)

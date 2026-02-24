@@ -2,8 +2,8 @@ import os
 import json
 from openai import OpenAI
 from pydantic import ValidationError
-from app.ai.prompts import PLAN_PROMPT, QUIZ_PROMPT
-from app.ai.schemas import PlanResponse, QuizResponse
+from app.ai.prompts import PLAN_PROMPT, QUIZ_PROMPT,DOUBT_PROMPT
+from app.ai.schemas import PlanResponse, QuizResponse,DoubtResponse
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -45,3 +45,7 @@ class StudyAgent:
     def generate_quiz(self, topic_name):
         user_input = f"Generate a quiz for topic: {topic_name}"
         return self._get_structured_completion(QUIZ_PROMPT, user_input, QuizResponse)
+    
+    def answer_doubt(self, topic_name, question):
+        system_prompt = DOUBT_PROMPT.format(topic_name=topic_name)
+        return self._get_structured_completion(system_prompt, question, DoubtResponse)

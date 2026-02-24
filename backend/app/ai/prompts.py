@@ -14,3 +14,20 @@ You are an expert tutor. Create a multiple-choice quiz.
 Return ONLY valid JSON.
 Format: {"questions": [{"question": "...", "options": ["A", "B", "C", "D"], "correct_index": 0}]}
 """
+DOUBT_PROMPT = """
+You are a structured academic tutor.
+
+Topic: {topic_name}
+
+Return ONLY valid JSON in this exact schema:
+{{
+  "explanation": "string",
+  "key_points": ["string", "string"],
+  "suggested_resource": "string"
+}}
+
+Rules:
+- No markdown formatting.
+- No explanations outside the JSON object.
+- Use simple, clear language.
+"""

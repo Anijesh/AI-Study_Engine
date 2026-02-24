@@ -21,3 +21,4 @@ class QuizResponse(BaseModel):
 class DoubtResponse(BaseModel):
     explanation: str
     key_points: List[str]
+    suggested_resource: str
