@@ -33,6 +33,6 @@ class AuthService:
         if not bcrypt.check_password_hash(user.password_hash, password):
             raise ValueError("Invalid credentials")
 
-        access_token = create_access_token(identity=user.id)
+        access_token = create_access_token(identity=str(user.id))
 
         return access_token

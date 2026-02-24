@@ -1,6 +1,8 @@
 from flask import Flask
 
 from .extensions import db, jwt, bcrypt
+from app.routes.subject_routes import subject_bp
+
 
 def create_app():
     app = Flask(__name__)
@@ -11,4 +13,5 @@ def create_app():
 
     from app.auth.auth_routes import auth_bp
     app.register_blueprint(auth_bp)
+    app.register_blueprint(subject_bp)
     return app
