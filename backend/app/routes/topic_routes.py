@@ -48,3 +48,18 @@ def list_topics(subject_id):
 
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
+    
+@topic_bp.route("/<int:topic_id>/generate-quiz", methods=["POST"])
+@jwt_required()
+def generate_quiz(subject_id,topic_id):
+    user_id = get_jwt_identity()
+
+    try:
+        quiz_data = TopicService.generate_quiz(topic_id, user_id)
+
+        return jsonify(quiz_data.model_dump()), 200
+
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        return jsonify({"error": "Failed to generate quiz. Please try again."}), 500
