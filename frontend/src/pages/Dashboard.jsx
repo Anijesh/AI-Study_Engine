@@ -77,9 +77,16 @@ const Dashboard = () => {
 
     return (
         <div className="page-container dashboard-page">
-            <div className="dashboard-header">
-                <h2>Dashboard</h2>
-                <button onClick={logout} className="logout-btn">Logout</button>
+            <div className="dashboard-header" style={{ alignItems: 'flex-start', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h2 style={{ fontSize: '2.5rem', fontFamily: "'Outfit', sans-serif", letterSpacing: '-1px', margin: 0, background: 'var(--accent-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                        Welcome back!
+                    </h2>
+                    <button onClick={logout} className="logout-btn">Logout</button>
+                </div>
+                <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
+                    Ready to crush your study goals today? Let's check your progress.
+                </p>
             </div>
 
             {stats && (

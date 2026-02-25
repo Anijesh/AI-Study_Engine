@@ -122,23 +122,27 @@ const SubjectPage = () => {
         <div className="page-container subject-page">
             <Link to="/dashboard" className="back-link">← Back to Dashboard</Link>
 
-            <div className="subject-header">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <h2>{subject.name}</h2>
-                    <button className="delete-btn" onClick={handleDeleteSubject}>Delete Subject</button>
+            <div className="subject-header" style={{ alignItems: 'flex-start', flexDirection: 'column', gap: '16px', borderBottom: '1px solid var(--panel-border)', paddingBottom: '24px', marginBottom: '32px' }}>
+                <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h2 style={{ fontSize: '2.5rem', fontFamily: "'Outfit', sans-serif", letterSpacing: '-1px', margin: 0, background: 'var(--accent-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                        {subject.name}
+                    </h2>
+                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                        <span className="exam-date-badge" style={{ background: 'rgba(139, 92, 246, 0.1)', borderColor: 'rgba(139, 92, 246, 0.3)', color: '#a78bfa' }}>
+                            Target: {new Date(subject.exam_date).toLocaleDateString()}
+                        </span>
+                        <button className="delete-btn" onClick={handleDeleteSubject}>Delete Subject</button>
+                    </div>
                 </div>
-                <span className="exam-date-badge">
-                    Exam: {new Date(subject.exam_date).toLocaleDateString()}
-                </span>
             </div>
 
             <div className="content-grid two-column">
                 {/* Left Column: Topics */}
                 <div className="content-column">
-                    <div className="section-header">
-                        <h3>Topics</h3>
-                        <button className="small-add-btn" onClick={() => setShowAddTopic(!showAddTopic)}>
-                            {showAddTopic ? 'Cancel' : '+ Add'}
+                    <div className="section-header" style={{ borderBottom: '1px solid var(--panel-border)', paddingBottom: '16px' }}>
+                        <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: '1.8rem', margin: 0 }}>Topics</h3>
+                        <button className="small-add-btn" onClick={() => setShowAddTopic(!showAddTopic)} style={{ background: showAddTopic ? 'rgba(255, 255, 255, 0.1)' : 'var(--accent-gradient)' }}>
+                            {showAddTopic ? 'Cancel' : '+ Add Topic'}
                         </button>
                     </div>
 
@@ -166,8 +170,9 @@ const SubjectPage = () => {
                     )}
 
                     {topics.length === 0 ? (
-                        <div className="empty-sub-state">
-                            <p>No topics listed. Add some to get started.</p>
+                        <div className="empty-sub-state" style={{ padding: '40px', textAlign: 'center', background: 'rgba(255, 255, 255, 0.02)', borderRadius: '16px', border: '1px dashed var(--panel-border)', color: 'var(--text-secondary)' }}>
+                            <h4 style={{ margin: '0 0 8px 0', color: 'var(--text-primary)', fontFamily: "'Outfit', sans-serif" }}>No Topics Yet</h4>
+                            <p style={{ margin: 0 }}>Add the chapters or subjects you need to cover for the exam.</p>
                         </div>
                     ) : (
                         <div className="topic-list">
@@ -181,14 +186,29 @@ const SubjectPage = () => {
                 {/* Right Column: Study Plan & Sessions */}
                 <div className="content-column right-sidebar">
                     <div className="study-plan-section">
-                        <div className="section-header">
-                            <h3>Study Plan</h3>
+                        <div className="section-header" style={{ borderBottom: 'none', paddingBottom: 0, marginBottom: '16px' }}>
+                            <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: '1.5rem', margin: 0 }}>Study Plan</h3>
                         </div>
-                        <p className="sidebar-description">
+                        <p className="sidebar-description" style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '24px' }}>
                             Generate an AI-powered study schedule based on your exam date, selected topics, and their difficulty levels.
                         </p>
                         <button
                             className="generate-btn"
+                            style={{
+                                width: '100%',
+                                padding: '16px',
+                                fontSize: '1.1rem',
+                                fontFamily: "'Outfit', sans-serif",
+                                background: topics.length === 0 ? 'rgba(255, 255, 255, 0.1)' : 'linear-gradient(45deg, #8b5cf6, #ec4899, #8b5cf6)',
+                                backgroundSize: '200% auto',
+                                animation: topics.length > 0 ? 'gradientMove 3s linear infinite' : 'none',
+                                color: topics.length === 0 ? 'var(--text-secondary)' : '#fff',
+                                border: 'none',
+                                borderRadius: '12px',
+                                cursor: topics.length === 0 || planLoading ? 'not-allowed' : 'pointer',
+                                boxShadow: topics.length > 0 && !planLoading ? '0 8px 20px rgba(139, 92, 246, 0.4)' : 'none',
+                                transition: 'all 0.3s ease'
+                            }}
                             onClick={handleGeneratePlan}
                             disabled={planLoading || topics.length === 0}
                         >

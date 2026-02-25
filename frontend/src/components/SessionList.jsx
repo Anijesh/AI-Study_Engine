@@ -13,8 +13,8 @@ const SessionList = ({ sessions, onSessionComplete }) => {
 
     if (!sessions || sessions.length === 0) {
         return (
-            <div className="empty-state">
-                <p>No study sessions generated yet. Click "Generate Plan" above.</p>
+            <div className="empty-state" style={{ background: 'rgba(255,255,255,0.02)', padding: '32px', textAlign: 'center', borderRadius: '16px', border: '1px dashed var(--panel-border)' }}>
+                <p style={{ color: 'var(--text-secondary)', margin: 0 }}>No study sessions generated yet. Click "Generate Plan" above.</p>
             </div>
         );
     }
@@ -32,20 +32,21 @@ const SessionList = ({ sessions, onSessionComplete }) => {
                 });
 
                 return (
-                    <div key={session.id} className={`session-item ${isCompleted ? 'completed-session' : ''}`} style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div key={session.id} className={`session-item ${isCompleted ? 'completed-session' : ''}`} style={{ display: 'flex', flexDirection: 'column', background: 'rgba(255,255,255,0.02)', backdropFilter: 'blur(10px)', border: '1px solid var(--panel-border)', padding: '20px', borderRadius: '16px', transition: 'transform 0.2s, box-shadow 0.2s', marginBottom: '16px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
                             <div className="session-details">
-                                <strong>{formattedDate}</strong>
-                                <span>({session.duration_minutes} min)</span>
-                                {session.topic_name && <span style={{ marginLeft: '8px', color: 'var(--primary-color)', fontWeight: '600' }}>{session.topic_name}</span>}
+                                <strong style={{ fontSize: '1.1rem', color: 'var(--text-primary)', fontFamily: "'Outfit', sans-serif" }}>{formattedDate}</strong>
+                                <span style={{ color: 'rgba(255,255,255,0.5)' }}>({session.duration_minutes} min)</span>
+                                {session.topic_name && <span style={{ marginLeft: '8px', color: '#c4b5fd', fontWeight: '500' }}>{session.topic_name}</span>}
                             </div>
 
                             <div className="session-actions">
                                 {isCompleted ? (
-                                    <span className="status-badge completed">Done</span>
+                                    <span className="status-badge completed" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#4ade80', border: '1px solid rgba(34, 197, 94, 0.2)' }}>Done</span>
                                 ) : (
                                     <button
                                         className="small-btn"
+                                        style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#c4b5fd', border: '1px solid rgba(139, 92, 246, 0.3)', padding: '6px 14px', borderRadius: '8px', cursor: 'pointer', transition: 'all 0.2s' }}
                                         onClick={() => handleComplete(session.id)}
                                     >
                                         Mark Complete
@@ -54,11 +55,11 @@ const SessionList = ({ sessions, onSessionComplete }) => {
                             </div>
                         </div>
                         {session.subtopics && session.subtopics.length > 0 && (
-                            <div className="subtopics-list" style={{ marginTop: '12px', padding: '12px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
-                                <h5 style={{ margin: '0 0 8px 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Focus Areas:</h5>
-                                <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.9rem' }}>
+                            <div className="subtopics-list" style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px dashed rgba(255,255,255,0.1)' }}>
+                                <h5 style={{ margin: '0 0 10px 0', fontSize: '0.85rem', color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '0.05em', fontFamily: "'Outfit', sans-serif" }}>Focus Areas:</h5>
+                                <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.9rem', color: 'var(--text-secondary)', display: 'grid', gap: '8px' }}>
                                     {session.subtopics.map((sub, idx) => (
-                                        <li key={idx} style={{ marginBottom: '4px' }}>{sub}</li>
+                                        <li key={idx} style={{ lineHeight: '1.4' }}>{sub}</li>
                                     ))}
                                 </ul>
                             </div>
