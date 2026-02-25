@@ -23,7 +23,27 @@ def create_subject():
 def get_subjects():
     usr_id = get_jwt_identity()
     subjects = SubjectService.get_subjects(usr_id)
-    return jsonify([{"id": s.id, "name": s.name, "exam_date": s.exam_date.isoformat()} for s in subjects]), 200
+    
+    from app.models.session import StudySession, SessionStatus
+    from app.models.topic import Topic
+    from app.extensions import db
+    
+    result = []
+    for s in subjects:
+        # Check if subject has any planned sessions
+        has_pending = db.session.query(StudySession).join(Topic).filter(
+            Topic.subject_id == s.id,
+            StudySession.status == SessionStatus.PLANNED
+        ).first() is not None
+        
+        result.append({
+            "id": s.id, 
+            "name": s.name, 
+            "exam_date": s.exam_date.isoformat(),
+            "has_pending_plans": has_pending
+        })
+        
+    return jsonify(result), 200
 
 @subject_bp.route("/<int:subject_id>/generate-plan", methods=["POST"])
 @jwt_required()

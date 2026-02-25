@@ -281,6 +281,23 @@ button:disabled {
   flex-direction: column;
   justify-content: space-between;
   transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.subject-card.has-pending {
+  border-color: rgba(234, 179, 8, 0.4);
+  box-shadow: 0 4px 12px rgba(234, 179, 8, 0.05);
+}
+
+.subject-card.has-pending::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #facc15;
 }
 
 .subject-card:hover {

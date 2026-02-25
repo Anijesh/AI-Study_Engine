@@ -9,7 +9,7 @@ const SubjectCard = ({ subject }) => {
     });
 
     return (
-        <div className="subject-card">
+        <div className={`subject-card ${subject.has_pending_plans ? 'has-pending' : ''}`}>
             <div className="subject-info">
                 <h3>{subject.name}</h3>
                 <p>Exam Date: {formattedDate}</p>

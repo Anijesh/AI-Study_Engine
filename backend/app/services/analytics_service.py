@@ -37,10 +37,7 @@ class AnalyticsService:
             .count()
         )
 
-        completion_rate = (
-            (completed_sessions / total_sessions) * 100
-            if total_sessions > 0 else 0
-        )
+        pending_sessions = total_sessions - completed_sessions
 
         quiz_attempts = (
             QuizAttempt.query
@@ -83,7 +80,7 @@ class AnalyticsService:
             "total_topics": total_topics,
             "total_study_sessions": total_sessions,
             "completed_sessions": completed_sessions,
-            "completion_rate": round(completion_rate, 2),
+            "pending_sessions": pending_sessions,
             "total_quiz_attempts": total_quiz_attempts,
             "average_quiz_accuracy": avg_accuracy,
             "weakest_topic": weakest_topic

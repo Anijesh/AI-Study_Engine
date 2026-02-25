@@ -89,8 +89,12 @@ const Dashboard = () => {
                         <div className="stat-value">{stats.total_subjects}</div>
                     </div>
                     <div className="stat-card">
-                        <h4>Completion Rate</h4>
-                        <div className="stat-value">{stats.completion_rate}%</div>
+                        <h4>Completed Plans</h4>
+                        <div className="stat-value">{stats.completed_sessions}</div>
+                    </div>
+                    <div className="stat-card">
+                        <h4>Pending Plans</h4>
+                        <div className="stat-value">{stats.pending_sessions}</div>
                     </div>
                     <div className="stat-card">
                         <h4>Avg Quiz Score</h4>
