@@ -51,9 +51,14 @@ class SubjectService:
         )
 
         try:
-            
+            from app.models.session import SessionStatus
             topic_ids = [t.id for t in topics]
-            StudySession.query.filter(StudySession.topic_id.in_(topic_ids)).delete(synchronize_session=False)
+            
+            # Only delete PLANNED sessions, preserve COMPLETED historical data
+            StudySession.query.filter(
+                StudySession.topic_id.in_(topic_ids),
+                StudySession.status == SessionStatus.PLANNED
+            ).delete(synchronize_session=False)
 
             created_sessions = []
             for item in plan.sessions:
