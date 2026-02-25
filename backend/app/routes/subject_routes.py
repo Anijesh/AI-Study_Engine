@@ -33,18 +33,50 @@ def generate_plan(subject_id):
     try:
         sessions = SubjectService.generate_plan(subject_id, user_id)
 
-        return jsonify([
-            {
-                "id": s.id,
-                "topic_id": s.topic_id,
-                "scheduled_date": s.scheduled_date.isoformat(),
-                "duration_minutes": s.duration_minutes,
-                "status": s.status.value
-            }
-            for s in sessions
-        ]), 201
+        return jsonify({
+            "message": "Study plan generated successfully",
+            "sessions": [
+                {
+                    "id": s.id,
+                    "topic_id": s.topic_id,
+                    "scheduled_date": s.scheduled_date.isoformat(),
+                    "duration_minutes": s.duration_minutes,
+                    "status": s.status.value
+                }
+                for s in sessions
+            ]
+        }), 201
 
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
     except Exception as e:
         return jsonify({"error": "An unexpected error occurred during plan generation"}), 500
+
+@subject_bp.route("/<int:subject_id>/sessions", methods=["GET"])
+@jwt_required()
+def get_subject_sessions(subject_id):
+    user_id = get_jwt_identity()
+    from app.models.session import StudySession
+    from app.models.topic import Topic
+    from app.models.subject import Subject
+    from app.extensions import db
+    
+    sessions = (
+        db.session.query(StudySession)
+        .join(Topic, StudySession.topic_id == Topic.id)
+        .join(Subject, Topic.subject_id == Subject.id)
+        .filter(Subject.id == subject_id)
+        .filter(Subject.user_id == int(user_id))
+        .all()
+    )
+
+    return jsonify([
+        {
+            "id": s.id,
+            "topic_id": s.topic_id,
+            "scheduled_date": s.scheduled_date.isoformat(),
+            "duration_minutes": s.duration_minutes,
+            "status": s.status.value
+        }
+        for s in sessions
+    ]), 200

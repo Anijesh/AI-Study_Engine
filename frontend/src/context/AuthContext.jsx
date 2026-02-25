@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            // The auth endpoints are under /auth, not /api/auth
+            
             const response = await api.post('http://localhost:5001/auth/login', { email, password });
             const { access_token } = response.data;
             localStorage.setItem('token', access_token);
