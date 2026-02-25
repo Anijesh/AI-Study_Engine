@@ -80,3 +80,28 @@ class TopicService:
 
         agent = StudyAgent()
         return agent.answer_doubt(topic.name, question)
+
+    @staticmethod
+    def delete_topic(topic_id, subject_id, user_id):
+        topic = Topic.query.join(Subject).filter(Topic.id == topic_id, Topic.subject_id == subject_id, Subject.user_id == user_id).first()
+        if not topic:
+            raise ValueError("Topic not found or access denied")
+        try:
+            db.session.delete(topic)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise ValueError(f"Failed to delete topic: {str(e)}")
+
+    @staticmethod
+    def mark_topic_complete(topic_id, subject_id, user_id):
+        topic = Topic.query.join(Subject).filter(Topic.id == topic_id, Topic.subject_id == subject_id, Subject.user_id == user_id).first()
+        if not topic:
+            raise ValueError("Topic not found or access denied")
+        topic.is_completed = not topic.is_completed
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise ValueError(f"Failed to update topic status: {str(e)}")
+        return topic.is_completed

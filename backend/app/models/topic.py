@@ -25,6 +25,9 @@ class Topic(db.Model):
         db.ForeignKey("subjects.id"),
         nullable=False
     )
+    
+    is_completed = db.Column(db.Boolean, default=False, nullable=False, server_default='0')
+    
     sessions = db.relationship(
     "StudySession",
     backref="topic",

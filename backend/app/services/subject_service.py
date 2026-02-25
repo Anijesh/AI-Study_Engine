@@ -85,3 +85,15 @@ class SubjectService:
         except Exception as e:
             db.session.rollback()
             raise Exception(f"Failed to save study plan: {str(e)}")
+
+    @staticmethod
+    def delete_subject(subject_id, user_id):
+        subject = Subject.query.filter_by(id=subject_id, user_id=user_id).first()
+        if not subject:
+            raise ValueError("Subject not found or access denied")
+        try:
+            db.session.delete(subject)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise ValueError(f"Failed to delete subject: {str(e)}")

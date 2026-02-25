@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 
 import TopicCard from '../components/TopicCard';
@@ -7,6 +7,7 @@ import SessionList from '../components/SessionList';
 
 const SubjectPage = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -78,6 +79,16 @@ const SubjectPage = () => {
         }
     };
 
+    const handleDeleteSubject = async () => {
+        if (!window.confirm('Are you sure you want to delete this subject? All topics and sessions will be permanently lost.')) return;
+        try {
+            await api.delete(`/subjects/${id}`);
+            navigate('/dashboard');
+        } catch (err) {
+            alert(err.response?.data?.error || 'Failed to delete subject');
+        }
+    };
+
     const handleGeneratePlan = async () => {
         if (topics.length === 0) {
             alert("Please add at least one topic before generating a study plan.");
@@ -112,7 +123,10 @@ const SubjectPage = () => {
             <Link to="/dashboard" className="back-link">← Back to Dashboard</Link>
 
             <div className="subject-header">
-                <h2>{subject.name}</h2>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <h2>{subject.name}</h2>
+                    <button className="delete-btn" onClick={handleDeleteSubject}>Delete Subject</button>
+                </div>
                 <span className="exam-date-badge">
                     Exam: {new Date(subject.exam_date).toLocaleDateString()}
                 </span>
@@ -158,7 +172,7 @@ const SubjectPage = () => {
                     ) : (
                         <div className="topic-list">
                             {topics.map(topic => (
-                                <TopicCard key={topic.id} topic={topic} subjectId={subject.id} />
+                                <TopicCard key={topic.id} topic={topic} subjectId={subject.id} onTopicChanged={fetchSubjectData} />
                             ))}
                         </div>
                     )}

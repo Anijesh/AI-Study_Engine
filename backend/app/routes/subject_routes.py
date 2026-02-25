@@ -100,3 +100,13 @@ def get_subject_sessions(subject_id):
         }
         for s in sessions
     ]), 200
+
+@subject_bp.route("/<int:subject_id>", methods=["DELETE"])
+@jwt_required()
+def delete_subject(subject_id):
+    user_id = get_jwt_identity()
+    try:
+        SubjectService.delete_subject(subject_id, user_id)
+        return jsonify({"message": "Subject deleted successfully"}), 200
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400

@@ -41,7 +41,8 @@ def list_topics(subject_id):
             {
                 "id": t.id,
                 "name": t.name,
-                "difficulty": t.difficulty.value
+                "difficulty": t.difficulty.value,
+                "is_completed": t.is_completed
             }
             for t in topics
         ])
@@ -81,3 +82,23 @@ def ask_question(subject_id, topic_id):
         return jsonify({"error": str(e)}), 403
     except Exception:
         return jsonify({"error": "AI service is temporarily busy"}), 500
+
+@topic_bp.route("/<int:topic_id>", methods=["DELETE"])
+@jwt_required()
+def delete_topic(subject_id, topic_id):
+    user_id = get_jwt_identity()
+    try:
+        TopicService.delete_topic(topic_id, subject_id, user_id)
+        return jsonify({"message": "Topic deleted successfully"}), 200
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+@topic_bp.route("/<int:topic_id>/complete", methods=["PATCH"])
+@jwt_required()
+def toggle_topic_complete(subject_id, topic_id):
+    user_id = get_jwt_identity()
+    try:
+        new_status = TopicService.mark_topic_complete(topic_id, subject_id, user_id)
+        return jsonify({"message": "Topic status updated", "is_completed": new_status}), 200
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
