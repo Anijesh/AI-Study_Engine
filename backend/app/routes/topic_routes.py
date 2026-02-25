@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.topic_service import TopicService
 
-topic_bp = Blueprint("topics", __name__, url_prefix="/subjects/<int:subject_id>/topics")
+topic_bp = Blueprint("topics", __name__, url_prefix="/api/subjects/<int:subject_id>/topics")
 
 
 @topic_bp.route("", methods=["POST"])

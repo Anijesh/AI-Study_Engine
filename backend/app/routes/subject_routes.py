@@ -4,7 +4,7 @@ from app.services.subject_service import SubjectService
 
 subject_bp = Blueprint("subjects", __name__, url_prefix="/api/subjects")
 
-@subject_bp.route("/", methods=["POST"])
+@subject_bp.route("", methods=["POST"])
 @jwt_required()
 def create_subject():   
     usr_id = get_jwt_identity()
@@ -18,7 +18,7 @@ def create_subject():
         return jsonify({"error": str(e)}), 400
     
 
-@subject_bp.route("/", methods=["GET"])
+@subject_bp.route("", methods=["GET"])
 @jwt_required()
 def get_subjects():
     usr_id = get_jwt_identity()

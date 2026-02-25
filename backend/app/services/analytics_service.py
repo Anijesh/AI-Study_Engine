@@ -57,11 +57,11 @@ class AnalyticsService:
             )
             .join(QuizAttempt.topic)
             .join(Topic.subject)
-            .filter(Subject.user_id == user_id)
+            .filter(Subject.user_id == int(user_id))
             .scalar()
         )
 
-        avg_accuracy = round(avg_accuracy * 100, 2) if avg_accuracy else 0
+        avg_accuracy = round(avg_accuracy * 100, 2) if avg_accuracy is not None else 0
 
         weakest = (
             db.session.query(
