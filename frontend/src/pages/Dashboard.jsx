@@ -77,16 +77,12 @@ const Dashboard = () => {
 
     return (
         <div className="page-container dashboard-page">
-            <div className="dashboard-header" style={{ alignItems: 'flex-start', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h2 style={{ fontSize: '2.5rem', fontFamily: "'Outfit', sans-serif", letterSpacing: '-1px', margin: 0, background: 'var(--accent-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                        Welcome back!
-                    </h2>
-                    <button onClick={logout} className="logout-btn">Logout</button>
+            <div className="dashboard-header">
+                <div>
+                    <h2>Welcome back.</h2>
+                    <p>Ready to crush your study goals today? Let's check your progress.</p>
                 </div>
-                <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
-                    Ready to crush your study goals today? Let's check your progress.
-                </p>
+                <button onClick={logout} className="logout-btn">Logout</button>
             </div>
 
             {stats && (
@@ -122,32 +118,34 @@ const Dashboard = () => {
                 </div>
 
                 {showAddForm && (
-                    <form className="add-subject-form auth-card" onSubmit={handleAddSubject}>
-                        <h4>Create New Subject</h4>
-                        {addError && <div className="error-message">{addError}</div>}
-                        <div className="form-group">
-                            <label>Subject Name</label>
-                            <input
-                                type="text"
-                                placeholder="e.g. Physics 101"
-                                value={newSubjectName}
-                                onChange={e => setNewSubjectName(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Exam Date</label>
-                            <input
-                                type="date"
-                                value={newSubjectDate}
-                                onChange={e => setNewSubjectDate(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <button type="submit" disabled={addLoading}>
-                            {addLoading ? 'Adding...' : 'Save Subject'}
-                        </button>
-                    </form>
+                    <div className="auth-form-container" style={{ padding: 0, marginBottom: '32px' }}>
+                        <form className="auth-form-wrapper" style={{ border: '1px solid var(--border-color)', padding: '32px', background: 'var(--panel-bg)', maxWidth: 'none' }} onSubmit={handleAddSubject}>
+                            <h4 style={{ fontSize: '1.5rem', marginBottom: '24px' }}>Create New Subject</h4>
+                            {addError && <div className="error-message">{addError}</div>}
+                            <div className="form-group">
+                                <label>Subject Name</label>
+                                <input
+                                    type="text"
+                                    placeholder="e.g. Physics 101"
+                                    value={newSubjectName}
+                                    onChange={e => setNewSubjectName(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Exam Date</label>
+                                <input
+                                    type="date"
+                                    value={newSubjectDate}
+                                    onChange={e => setNewSubjectDate(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <button type="submit" disabled={addLoading}>
+                                {addLoading ? 'Adding...' : 'Save Subject'}
+                            </button>
+                        </form>
+                    </div>
                 )}
 
                 {subjects.length === 0 ? (

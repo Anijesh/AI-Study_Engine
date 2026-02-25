@@ -23,7 +23,7 @@ const SessionList = ({ sessions, onSessionComplete }) => {
     const sortedSessions = [...sessions].sort((a, b) => new Date(a.scheduled_date) - new Date(b.scheduled_date));
 
     return (
-        <div className="sessions-list">
+        <div className="sessions-list" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '24px', alignItems: 'start' }}>
             {sortedSessions.map(session => {
                 const isCompleted = session.status === 'COMPLETED';
                 const dateObj = new Date(session.scheduled_date);
@@ -32,22 +32,24 @@ const SessionList = ({ sessions, onSessionComplete }) => {
                 });
 
                 return (
-                    <div key={session.id} className={`session-item ${isCompleted ? 'completed-session' : ''}`} style={{ display: 'flex', flexDirection: 'column', background: 'rgba(255,255,255,0.02)', backdropFilter: 'blur(10px)', border: '1px solid var(--panel-border)', padding: '20px', borderRadius: '16px', transition: 'transform 0.2s, box-shadow 0.2s', marginBottom: '16px' }}>
+                    <div key={session.id} className={`session-item ${isCompleted ? 'completed-session' : ''}`} style={{ display: 'flex', flexDirection: 'column', padding: '24px', border: '1px solid var(--border-color)', borderRadius: '0', background: isCompleted ? 'rgba(204, 255, 0, 0.05)' : 'transparent', height: '100%' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
-                            <div className="session-details">
-                                <strong style={{ fontSize: '1.1rem', color: 'var(--text-primary)', fontFamily: "'Outfit', sans-serif" }}>{formattedDate}</strong>
-                                <span style={{ color: 'rgba(255,255,255,0.5)' }}>({session.duration_minutes} min)</span>
-                                {session.topic_name && <span style={{ marginLeft: '8px', color: '#c4b5fd', fontWeight: '500' }}>{session.topic_name}</span>}
+                            <div className="session-details" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <strong style={{ fontSize: '1.25rem', color: 'var(--text-primary)', fontFamily: "var(--font-display)", fontWeight: 500, letterSpacing: '-0.02em' }}>{formattedDate}</strong>
+                                <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{session.duration_minutes} MIN</span>
+                                {session.topic_name && <span style={{ color: 'var(--accent-color)', fontWeight: '600', fontSize: '1rem', marginTop: '4px' }}>{session.topic_name}</span>}
                             </div>
 
                             <div className="session-actions">
                                 {isCompleted ? (
-                                    <span className="status-badge completed" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#4ade80', border: '1px solid rgba(34, 197, 94, 0.2)' }}>Done</span>
+                                    <span className="status-badge completed" style={{ background: 'var(--accent-color)', color: 'var(--bg-color)', padding: '6px 12px', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', border: 'none' }}>Done</span>
                                 ) : (
                                     <button
                                         className="small-btn"
-                                        style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#c4b5fd', border: '1px solid rgba(139, 92, 246, 0.3)', padding: '6px 14px', borderRadius: '8px', cursor: 'pointer', transition: 'all 0.2s' }}
+                                        style={{ background: 'transparent', color: 'var(--text-primary)', border: '1px solid var(--text-primary)', padding: '8px 16px', fontSize: '0.8125rem', textTransform: 'uppercase', letterSpacing: '0.05em', cursor: 'pointer', transition: 'all 0.2s', width: 'auto' }}
                                         onClick={() => handleComplete(session.id)}
+                                        onMouseEnter={(e) => { e.target.style.background = 'var(--accent-color)'; e.target.style.color = 'var(--bg-color)'; e.target.style.borderColor = 'var(--accent-color)'; }}
+                                        onMouseLeave={(e) => { e.target.style.background = 'transparent'; e.target.style.color = 'var(--text-primary)'; e.target.style.borderColor = 'var(--text-primary)'; }}
                                     >
                                         Mark Complete
                                     </button>
@@ -55,11 +57,11 @@ const SessionList = ({ sessions, onSessionComplete }) => {
                             </div>
                         </div>
                         {session.subtopics && session.subtopics.length > 0 && (
-                            <div className="subtopics-list" style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px dashed rgba(255,255,255,0.1)' }}>
-                                <h5 style={{ margin: '0 0 10px 0', fontSize: '0.85rem', color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '0.05em', fontFamily: "'Outfit', sans-serif" }}>Focus Areas:</h5>
-                                <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.9rem', color: 'var(--text-secondary)', display: 'grid', gap: '8px' }}>
+                            <div className="subtopics-list" style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid var(--panel-border)' }}>
+                                <h5 style={{ margin: '0 0 16px 0', fontSize: '0.875rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', fontFamily: "var(--font-body)" }}>Focus Areas</h5>
+                                <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.95rem', color: 'var(--text-primary)', display: 'grid', gap: '12px', fontFamily: "var(--font-body)" }}>
                                     {session.subtopics.map((sub, idx) => (
-                                        <li key={idx} style={{ lineHeight: '1.4' }}>{sub}</li>
+                                        <li key={idx} style={{ lineHeight: '1.5' }}>{sub}</li>
                                     ))}
                                 </ul>
                             </div>

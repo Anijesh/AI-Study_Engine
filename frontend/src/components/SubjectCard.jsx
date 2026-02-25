@@ -12,10 +12,10 @@ const SubjectCard = ({ subject }) => {
         <div className={`subject-card ${subject.has_pending_plans ? 'has-pending' : ''}`}>
             <div className="subject-info">
                 <h3>{subject.name}</h3>
-                <p>Exam Date: {formattedDate}</p>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Exam Date • {formattedDate}</p>
             </div>
             <Link to={`/subjects/${subject.id}`} className="view-btn">
-                View Subject
+                Enter Subject →
             </Link>
         </div>
     );

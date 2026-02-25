@@ -26,37 +26,45 @@ const Register = () => {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-card">
-                <h2>Create an Account</h2>
-                {error && <div className="error-message">{error}</div>}
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label>Email Address</label>
-                        <input
-                            type="email"
-                            placeholder="Enter your email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+        <div className="auth-layout">
+            <div className="auth-visual">
+                <div className="auth-visual-content">
+                    <h1>Begin Your<br /><span>Ascension</span></h1>
+                    <p>Forge your personalized study path with ruthless efficiency and algorithmic precision.</p>
+                </div>
+            </div>
+            <div className="auth-form-container">
+                <div className="auth-form-wrapper">
+                    <h2>Initialize</h2>
+                    {error && <div className="error-message">{error}</div>}
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label>Email Address</label>
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Password</label>
+                            <input
+                                type="password"
+                                placeholder="Choose a secure password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <button type="submit" disabled={loadingForm}>
+                            {loadingForm ? 'Initializing...' : 'Create Account'}
+                        </button>
+                    </form>
+                    <div className="auth-footer">
+                        Already have access? <Link to="/login">Sign In</Link>
                     </div>
-                    <div className="form-group">
-                        <label>Password</label>
-                        <input
-                            type="password"
-                            placeholder="Choose a strong password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button type="submit" disabled={loadingForm}>
-                        {loadingForm ? 'Creating account...' : 'Sign Up'}
-                    </button>
-                </form>
-                <div className="auth-footer">
-                    Already have an account? <Link to="/login">Sign In</Link>
                 </div>
             </div>
         </div>

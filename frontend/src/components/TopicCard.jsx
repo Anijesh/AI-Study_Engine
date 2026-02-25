@@ -27,15 +27,15 @@ const TopicCard = ({ topic, subjectId, onTopicChanged }) => {
     };
 
     return (
-        <div className={`topic-card ${topic.is_completed ? 'completed' : ''}`} style={{ transition: 'all 0.3s ease', cursor: 'default' }}>
-            <div className="topic-header" style={{ alignItems: 'flex-start' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    <h4 style={{ textDecoration: topic.is_completed ? 'line-through' : 'none', color: topic.is_completed ? 'var(--text-secondary)' : 'var(--text-primary)' }}>{topic.name}</h4>
-                    <span className={`difficulty-badge ${topic.difficulty.toLowerCase()}`} style={{ width: 'fit-content' }}>
+        <div className={`topic-card ${topic.is_completed ? 'completed' : ''}`}>
+            <div className="topic-header">
+                <div>
+                    <h4>{topic.name}</h4>
+                    <span className={`difficulty-badge ${topic.difficulty.toLowerCase()}`}>
                         {topic.difficulty}
                     </span>
                 </div>
-                <div className="topic-actions" style={{ alignItems: 'center' }}>
+                <div className="topic-actions">
                     <button className="icon-btn" onClick={handleToggleComplete} title={topic.is_completed ? "Mark Incomplete" : "Mark Complete"}>
                         {topic.is_completed ? '↩️' : '✅ Done'}
                     </button>
@@ -45,10 +45,10 @@ const TopicCard = ({ topic, subjectId, onTopicChanged }) => {
                     >
                         {showDoubtBox ? 'Close' : 'Ask Doubt'}
                     </button>
-                    <button onClick={() => setShowQuizModal(true)} style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#c4b5fd', border: '1px solid rgba(139, 92, 246, 0.3)' }}>
+                    <button onClick={() => setShowQuizModal(true)} style={{ background: 'var(--text-primary)', color: 'var(--bg-color)' }}>
                         Take Quiz
                     </button>
-                    <button className="icon-btn danger" onClick={handleDeleteTopic} title="Delete Topic" style={{ backgroundColor: 'transparent', padding: '0 8px', fontSize: '1.2rem', color: '#ef4444', border: 'none' }}>
+                    <button className="icon-btn danger" onClick={handleDeleteTopic} title="Delete Topic">
                         🗑️
                     </button>
                 </div>

@@ -83,67 +83,67 @@ const QuizModal = ({ topic, subjectId, onClose }) => {
     };
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content quiz-modal">
-                <div className="modal-header">
-                    <h3>{topic.name} Quiz</h3>
-                    <button className="close-btn" onClick={onClose} disabled={isSubmitted && !results}>×</button>
+        <div className="modal-overlay" style={{ background: 'rgba(5,5,5,0.9)', backdropFilter: 'blur(8px)' }}>
+            <div className="modal-content quiz-modal" style={{ background: 'var(--bg-color)', border: '1px solid var(--border-color)', borderRadius: 0, padding: 0 }}>
+                <div className="modal-header" style={{ padding: '32px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', margin: 0 }}>{topic.name} Quiz</h3>
+                    <button className="close-btn" onClick={onClose} disabled={isSubmitted && !results} style={{ fontSize: '2.5rem', fontWeight: 300, cursor: 'pointer', background: 'transparent', border: 'none', color: 'var(--text-primary)' }}>×</button>
                 </div>
 
-                <div className="modal-body">
+                <div className="modal-body" style={{ padding: '32px', maxHeight: '70vh', overflowY: 'auto' }}>
                     {loading ? (
-                        <div className="loading-state">
-                            <div className="spinner"></div>
-                            <p>Generating personalized AI questions...</p>
+                        <div className="loading-state" style={{ textAlign: 'center', padding: '64px' }}>
+                            <p style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontSize: '1.25rem', color: 'var(--text-secondary)' }}>Generating personalized AI parameters...</p>
                         </div>
                     ) : error ? (
-                        <div className="error-state">
-                            <p>{error}</p>
-                            <button onClick={generateQuiz}>Try Again</button>
+                        <div className="error-state" style={{ padding: '32px', border: '1px solid var(--error-color)', background: 'var(--color-error-bg)', color: 'var(--error-color)', marginBottom: '24px' }}>
+                            <p style={{ margin: '0 0 16px 0', fontWeight: 'bold' }}>{error}</p>
+                            <button onClick={generateQuiz} style={{ width: 'auto', background: 'transparent', color: 'var(--error-color)', border: '1px solid var(--error-color)' }}>Retry Initialization</button>
                         </div>
                     ) : results ? (
                         <div className="quiz-results">
-                            <h4>You scored {results.score} out of {results.total}</h4>
-                            <div className="results-list">
+                            <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', marginBottom: '32px', color: 'var(--accent-color)' }}>Assessment Complete: {results.score} / {results.total}</h4>
+                            <div className="results-list" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                                 {results.details.map((res, i) => (
-                                    <div key={i} className={`result-item ${res.isCorrect ? 'correct' : 'incorrect'}`}>
-                                        <p className="q-text"><strong>Q:</strong> {res.question}</p>
-                                        <p className="a-text"><strong>Your Answer:</strong> {res.selected}</p>
+                                    <div key={i} className={`result-item ${res.isCorrect ? 'correct' : 'incorrect'}`} style={{ padding: '24px', border: `1px solid ${res.isCorrect ? 'var(--accent-color)' : 'var(--error-color)'}`, background: 'var(--panel-bg)' }}>
+                                        <p className="q-text" style={{ fontSize: '1.1rem', marginBottom: '16px', lineHeight: 1.5 }}><strong>{i + 1}.</strong> {res.question}</p>
+                                        <p className="a-text" style={{ color: res.isCorrect ? 'var(--accent-color)' : 'var(--error-color)', marginBottom: '8px' }}><strong>Your Input:</strong> {res.selected}</p>
                                         {!res.isCorrect && (
-                                            <p className="c-text"><strong>Correct Answer:</strong> {res.correct}</p>
+                                            <p className="c-text" style={{ color: 'var(--text-primary)', marginBottom: '8px' }}><strong>Expected:</strong> {res.correct}</p>
                                         )}
-                                        {res.explanation && <p className="e-text"><em>{res.explanation}</em></p>}
+                                        {res.explanation && <p className="e-text" style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px dashed var(--border-color)', color: 'var(--text-secondary)', fontStyle: 'italic' }}>{res.explanation}</p>}
                                     </div>
                                 ))}
                             </div>
-                            <button onClick={onClose} style={{ marginTop: '24px' }}>Close</button>
+                            <button onClick={onClose} style={{ marginTop: '32px' }}>Acknowledge</button>
                         </div>
                     ) : quizData ? (
                         <div className="quiz-questions">
                             {submitError && <div className="error-message">{submitError}</div>}
 
                             {quizData.questions.map((q, qIndex) => (
-                                <div key={qIndex} className="question-block">
-                                    <p className="question-text">{qIndex + 1}. {q.question}</p>
-                                    <div className="options-list">
+                                <div key={qIndex} className="question-block" style={{ marginBottom: '40px', paddingBottom: '32px', borderBottom: '1px solid var(--border-color)' }}>
+                                    <p className="question-text" style={{ fontSize: '1.25rem', marginBottom: '24px', lineHeight: 1.5, fontFamily: 'var(--font-body)' }}>{qIndex + 1}. {q.question}</p>
+                                    <div className="options-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                         {q.options.map((opt, oIndex) => (
-                                            <label key={oIndex} className="option-label">
+                                            <label key={oIndex} className="option-label" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px', border: '1px solid var(--border-color)', cursor: 'pointer', background: answers[qIndex] === opt ? 'rgba(255,255,255,0.05)' : 'transparent', transition: 'all 0.2s ease', borderColor: answers[qIndex] === opt ? 'var(--text-primary)' : 'var(--border-color)' }}>
                                                 <input
                                                     type="radio"
                                                     name={`question-${qIndex}`}
                                                     value={opt}
                                                     checked={answers[qIndex] === opt}
                                                     onChange={() => handleOptionSelect(qIndex, opt)}
+                                                    style={{ margin: 0, width: '20px', height: '20px', accentColor: 'var(--accent-color)' }}
                                                 />
-                                                <span>{opt}</span>
+                                                <span style={{ fontSize: '1rem', fontFamily: 'var(--font-body)' }}>{opt}</span>
                                             </label>
                                         ))}
                                     </div>
                                 </div>
                             ))}
-                            <div className="quiz-footer">
-                                <button onClick={submitQuiz} disabled={isSubmitted}>
-                                    {isSubmitted ? 'Submitting...' : 'Submit Answers'}
+                            <div className="quiz-footer" style={{ marginTop: '40px' }}>
+                                <button onClick={submitQuiz} disabled={isSubmitted} style={{ background: 'var(--accent-color)', color: 'var(--bg-color)', border: 'none' }}>
+                                    {isSubmitted ? 'Transmitting...' : 'Submit Assessment'}
                                 </button>
                             </div>
                         </div>

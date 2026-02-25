@@ -26,37 +26,45 @@ const Login = () => {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-card">
-                <h2>Welcome Back</h2>
-                {error && <div className="error-message">{error}</div>}
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label>Email Address</label>
-                        <input
-                            type="email"
-                            placeholder="Enter your email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+        <div className="auth-layout">
+            <div className="auth-visual">
+                <div className="auth-visual-content">
+                    <h1>Master Your<br /><span>Intelligence</span></h1>
+                    <p>The AI-native study engine designed for raw performance and absolute focus.</p>
+                </div>
+            </div>
+            <div className="auth-form-container">
+                <div className="auth-form-wrapper">
+                    <h2>Welcome Back</h2>
+                    {error && <div className="error-message">{error}</div>}
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label>Email Address</label>
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Password</label>
+                            <input
+                                type="password"
+                                placeholder="Enter your password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <button type="submit" disabled={loadingForm}>
+                            {loadingForm ? 'Authenticating...' : 'Sign In'}
+                        </button>
+                    </form>
+                    <div className="auth-footer">
+                        Don't have an account? <Link to="/register">Create one now</Link>
                     </div>
-                    <div className="form-group">
-                        <label>Password</label>
-                        <input
-                            type="password"
-                            placeholder="Enter your password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button type="submit" disabled={loadingForm}>
-                        {loadingForm ? 'Signing in...' : 'Sign In'}
-                    </button>
-                </form>
-                <div className="auth-footer">
-                    Don't have an account? <Link to="/register">Create one now</Link>
                 </div>
             </div>
         </div>
