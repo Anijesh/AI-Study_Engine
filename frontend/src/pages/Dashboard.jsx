@@ -77,12 +77,32 @@ const Dashboard = () => {
 
     return (
         <div className="page-container dashboard-page">
-            <div className="dashboard-header">
+            <div className="dashboard-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '48px', borderBottom: '1px solid var(--border-color)', paddingBottom: '32px' }}>
                 <div>
-                    <h2>Welcome back.</h2>
-                    <p>Ready to crush your study goals today? Let's check your progress.</p>
+                    <h2 style={{ fontSize: '4.5rem', fontFamily: "var(--font-display)", letterSpacing: '-0.02em', margin: 0, color: 'var(--text-primary)', lineHeight: 1 }}>Welcome back.</h2>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginTop: '16px', fontFamily: "var(--font-body)" }}>Ready to crush your study goals today? Let's check your progress.</p>
                 </div>
-                <button onClick={logout} className="logout-btn">Logout</button>
+                <button
+                    onClick={logout}
+                    className="logout-btn"
+                    style={{
+                        background: 'transparent',
+                        color: 'var(--error-color)',
+                        border: '1px solid var(--error-color)',
+                        padding: '10px 24px',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        fontWeight: 700,
+                        fontSize: '0.875rem',
+                        cursor: 'pointer',
+                        borderRadius: 0,
+                        transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => { e.target.style.background = 'var(--error-color)'; e.target.style.color = 'var(--bg-color)'; }}
+                    onMouseLeave={(e) => { e.target.style.background = 'transparent'; e.target.style.color = 'var(--error-color)'; }}
+                >
+                    Logout
+                </button>
             </div>
 
             {stats && (

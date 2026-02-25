@@ -123,9 +123,12 @@ const SubjectPage = () => {
                     <h2 style={{ fontSize: '4.5rem', fontFamily: "var(--font-display)", letterSpacing: '-0.02em', margin: 0, color: 'var(--text-primary)', lineHeight: 1 }}>
                         {subject.name}
                     </h2>
-                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
                         <span className="exam-date-badge" style={{ background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-secondary)', borderRadius: 0, padding: '8px 16px', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', fontWeight: 600 }}>
                             Target • {new Date(subject.exam_date).toLocaleDateString()}
+                        </span>
+                        <span className="topic-count-badge" style={{ background: 'var(--panel-bg)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', borderRadius: 0, padding: '8px 16px', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', fontWeight: 700 }}>
+                            Topics • <span style={{ color: 'var(--accent-color)' }}>{topics.length}</span>
                         </span>
                         <button className="delete-btn" onClick={handleDeleteSubject} style={{ background: 'transparent', color: 'var(--error-color)', border: '1px solid var(--error-color)', borderRadius: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', width: 'auto', padding: '8px 16px' }}>Delete Subject</button>
                     </div>
@@ -155,40 +158,45 @@ const SubjectPage = () => {
 
             {/* Topics Section (Full Width) */}
             <div className="topics-section" style={{ marginBottom: '64px' }}>
-                <div className="section-header" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '24px', marginBottom: '32px' }}>
+                <div className="section-header" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '24px', marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
                         <h3 style={{ fontFamily: "var(--font-display)", fontSize: '2.5rem', margin: 0 }}>Syllabus Topics</h3>
-                        <span style={{ color: 'var(--text-secondary)', fontFamily: "var(--font-body)", textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.875rem' }}>{topics.length} Declared</span>
                     </div>
-                    <button className="small-add-btn" onClick={() => setShowAddTopic(!showAddTopic)} style={{ background: showAddTopic ? 'var(--panel-bg)' : 'var(--text-primary)', color: showAddTopic ? 'var(--text-primary)' : 'var(--bg-color)', border: '1px solid var(--text-primary)', borderRadius: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', fontWeight: 600 }}>
-                        {showAddTopic ? 'Cancel' : '+ Add Topic'}
-                    </button>
+
+                    {!showAddTopic ? (
+                        <button className="small-add-btn" onClick={() => setShowAddTopic(true)} style={{ background: 'var(--text-primary)', color: 'var(--bg-color)', border: '1px solid var(--text-primary)', borderRadius: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', fontWeight: 600, width: 'auto', padding: '12px 24px' }}>
+                            + Add Topic
+                        </button>
+                    ) : (
+                        <form className="add-topic-form-inline" onSubmit={handleCreateTopic} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                            <input
+                                type="text"
+                                placeholder="Topic Name"
+                                value={newTopicName}
+                                onChange={e => setNewTopicName(e.target.value)}
+                                required
+                                style={{ background: 'var(--panel-bg)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '10px 16px', fontFamily: 'var(--font-body)', fontSize: '0.875rem', borderRadius: 0, minWidth: '250px' }}
+                            />
+                            <select
+                                value={newTopicDifficulty}
+                                onChange={e => setNewTopicDifficulty(e.target.value)}
+                                style={{ background: 'var(--panel-bg)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '10px 16px', fontFamily: 'var(--font-body)', fontSize: '0.875rem', borderRadius: 0 }}
+                            >
+                                <option value="EASY" style={{ color: '#000' }}>EASY</option>
+                                <option value="MEDIUM" style={{ color: '#000' }}>MEDIUM</option>
+                                <option value="HARD" style={{ color: '#000' }}>HARD</option>
+                            </select>
+                            <button type="submit" disabled={topicLoading} style={{ width: 'auto', background: 'var(--accent-color)', color: 'var(--bg-color)', border: '1px solid var(--accent-color)', padding: '10px 24px', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700, fontSize: '0.875rem' }}>
+                                {topicLoading ? '...' : 'Save'}
+                            </button>
+                            <button type="button" onClick={() => setShowAddTopic(false)} style={{ width: 'auto', background: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border-color)', padding: '10px 16px', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, fontSize: '0.875rem' }}>
+                                Cancel
+                            </button>
+                        </form>
+                    )}
                 </div>
 
-                {showAddTopic && (
-                    <form className="add-topic-form" onSubmit={handleCreateTopic} style={{ marginBottom: '32px', display: 'flex', gap: '16px', alignItems: 'center', background: 'var(--panel-bg)', padding: '24px', border: '1px solid var(--border-color)' }}>
-                        <input
-                            type="text"
-                            placeholder="Topic Name"
-                            value={newTopicName}
-                            onChange={e => setNewTopicName(e.target.value)}
-                            required
-                            style={{ flex: 1, background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '12px 16px', fontFamily: 'var(--font-body)', fontSize: '1rem', borderRadius: 0 }}
-                        />
-                        <select
-                            value={newTopicDifficulty}
-                            onChange={e => setNewTopicDifficulty(e.target.value)}
-                            style={{ background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '12px 16px', fontFamily: 'var(--font-body)', fontSize: '1rem', borderRadius: 0 }}
-                        >
-                            <option value="EASY" style={{ color: '#000' }}>EASY</option>
-                            <option value="MEDIUM" style={{ color: '#000' }}>MEDIUM</option>
-                            <option value="HARD" style={{ color: '#000' }}>HARD</option>
-                        </select>
-                        <button type="submit" disabled={topicLoading} style={{ width: 'auto', background: 'var(--accent-color)', color: 'var(--bg-color)', border: 'none', padding: '12px 32px', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>
-                            {topicLoading ? '...' : 'Add'}
-                        </button>
-                    </form>
-                )}
+
 
                 {topics.length === 0 ? (
                     <div className="empty-sub-state" style={{ padding: '64px 40px', textAlign: 'center', background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
@@ -243,7 +251,7 @@ const SubjectPage = () => {
                                     onMouseEnter={(e) => { if (topics.length > 0 && !planLoading) { e.target.style.background = 'var(--text-primary)'; e.target.style.color = 'var(--bg-color)'; e.target.style.borderColor = 'var(--text-primary)'; } }}
                                     onMouseLeave={(e) => { if (topics.length > 0 && !planLoading) { e.target.style.background = 'var(--accent-color)'; e.target.style.color = 'var(--bg-color)'; e.target.style.borderColor = 'var(--accent-color)'; } }}
                                 >
-                                    {planLoading ? 'Computing...' : 'Generate Algorithm'}
+                                    {planLoading ? 'Computing...' : 'Generate Plan'}
                                 </button>
                             </div>
 
