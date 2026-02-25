@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 
 from .extensions import db, jwt, bcrypt
 from app.routes.subject_routes import subject_bp
@@ -10,6 +11,7 @@ from app.routes.dashboard_routes import dashboard_bp
 
 def create_app():
     app = Flask(__name__)
+    CORS(app) # Enable Cross-Origin Resource Sharing for all domains
     app.config.from_object('app.config.Config')
     db.init_app(app)
     jwt.init_app(app)
