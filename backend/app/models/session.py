@@ -22,6 +22,8 @@ class StudySession(db.Model):
     scheduled_date = db.Column(db.Date, nullable=False)
 
     duration_minutes = db.Column(db.Integer, nullable=False)
+    
+    subtopics = db.Column(db.Text, nullable=True)
 
     status = db.Column(
         db.Enum(SessionStatus),

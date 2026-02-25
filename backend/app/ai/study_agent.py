@@ -38,8 +38,8 @@ class StudyAgent:
             print(f"AI Service Error: {e}")
             raise Exception("Failed to communicate with the Study Engine.")
 
-    def generate_plan(self, topics_list, exam_date):
-        user_input = f"Topics: {topics_list}, Exam Date: {exam_date}"
+    def generate_plan(self, topics, exam_date, days_until_exam):
+        user_input = f"Topics and Difficulties: {json.dumps(topics)}, Exam Date: {exam_date} (Days until exam: {days_until_exam})"
         return self._get_structured_completion(PLAN_PROMPT, user_input, PlanResponse)
 
     def generate_quiz(self, topic_name):

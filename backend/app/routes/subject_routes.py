@@ -53,14 +53,17 @@ def generate_plan(subject_id):
     try:
         sessions = SubjectService.generate_plan(subject_id, user_id)
 
+        import json
         return jsonify({
             "message": "Study plan generated successfully",
             "sessions": [
                 {
                     "id": s.id,
                     "topic_id": s.topic_id,
+                    "topic_name": s.topic.name if s.topic else None,
                     "scheduled_date": s.scheduled_date.isoformat(),
                     "duration_minutes": s.duration_minutes,
+                    "subtopics": json.loads(s.subtopics) if s.subtopics else [],
                     "status": s.status.value
                 }
                 for s in sessions
@@ -80,6 +83,7 @@ def get_subject_sessions(subject_id):
     from app.models.topic import Topic
     from app.models.subject import Subject
     from app.extensions import db
+    import json
     
     sessions = (
         db.session.query(StudySession)
@@ -94,8 +98,10 @@ def get_subject_sessions(subject_id):
         {
             "id": s.id,
             "topic_id": s.topic_id,
+            "topic_name": s.topic.name if s.topic else None,
             "scheduled_date": s.scheduled_date.isoformat(),
             "duration_minutes": s.duration_minutes,
+            "subtopics": json.loads(s.subtopics) if s.subtopics else [],
             "status": s.status.value
         }
         for s in sessions

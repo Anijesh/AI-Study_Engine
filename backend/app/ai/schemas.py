@@ -6,6 +6,7 @@ class SessionItem(BaseModel):
     topic_name: str
     scheduled_date: date
     duration_minutes: int
+    subtopics: List[str]
 
 class PlanResponse(BaseModel):
     sessions: List[SessionItem]

@@ -41,13 +41,18 @@ class SubjectService:
         if not topics:
             raise ValueError("No topics available for planning. Please add topics first.")
         
-        topic_names = [t.name for t in topics]
+        topic_context = [{"name": t.name, "difficulty": t.difficulty.value} for t in topics]
+        
+        days_until_exam = (subject.exam_date - date.today()).days
+        if days_until_exam < 1:
+            days_until_exam = 1
 
-    
         agent = StudyAgent() 
+        import json
         plan = agent.generate_plan(
-            topics_list=topic_names, 
-            exam_date=subject.exam_date.isoformat()
+            topics=topic_context, 
+            exam_date=subject.exam_date.isoformat(),
+            days_until_exam=days_until_exam
         )
 
         try:
@@ -73,6 +78,7 @@ class SubjectService:
                     topic_id=topic_obj.id,
                     scheduled_date=item.scheduled_date,
                     duration_minutes=item.duration_minutes,
+                    subtopics=json.dumps(item.subtopics),
                     status="PLANNED" 
                 )
 

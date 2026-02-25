@@ -1,12 +1,24 @@
 PLAN_PROMPT = """
-You are a structured academic planning engine.
-Generate a study schedule based on the provided topics and exam date.
-Return ONLY valid JSON. 
+You are an expert academic planning engine.
+Generate a structured, logical study schedule based on the provided topics, their difficulties, and the days remaining until the exam.
+Return ONLY valid JSON.
 
 Rules:
-- Space out sessions logically until the exam date.
-- Ensure duration_minutes is a positive integer.
-- Format: {"sessions": [{"topic_name": "...", "scheduled_date": "YYYY-MM-DD", "duration_minutes": 60}]}
+1. Break down large or HARD topics into MULTIPLE separate study sessions logically spaced out. DO NOT just make one session per topic.
+2. For each session, determine specific `subtopics` the student should cover based on realistic academic weightage and study flow.
+3. Space out the sessions dynamically between tomorrow and the exam date. Do not cram everything in one day unless the exam is tomorrow.
+4. Scale `duration_minutes` based on the difficulty (e.g., EASY=30m, MEDIUM=60m, HARD=90m-120m).
+5. Format EXACTLY as:
+{
+  "sessions": [
+    {
+      "topic_name": "Exact Name Matching Input",
+      "scheduled_date": "YYYY-MM-DD",
+      "duration_minutes": 60,
+      "subtopics": ["Concept 1", "Concept 2"]
+    }
+  ]
+}
 """
 
 QUIZ_PROMPT = """
