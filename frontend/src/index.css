@@ -24,6 +24,7 @@
 }
 
 :root {
+  color-scheme: dark;
   --bg-color: #050505;
   --panel-bg: #111111;
   --panel-border: #333333;
@@ -99,6 +100,18 @@ h6 {
   outline: none;
   border-color: var(--text-primary);
   background: rgba(255, 255, 255, 0.02);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background-color: var(--accent-color);
+  padding: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  background-color: var(--accent-hover);
 }
 
 button {
