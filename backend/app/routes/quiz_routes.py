@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.quiz_service import QuizService
 
-quiz_bp = Blueprint('quiz', __name__,url_prefix='/topics/<int:topic_id>/quiz')
+quiz_bp = Blueprint('quiz', __name__,url_prefix='/api/topics/<int:topic_id>/quiz')
 
 @quiz_bp.route('/submit', methods=['POST'])
 @jwt_required()

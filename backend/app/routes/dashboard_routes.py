@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.analytics_service import AnalyticsService
 
-dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
+dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/api/dashboard")
 
 
 @dashboard_bp.route("", methods=["GET"])

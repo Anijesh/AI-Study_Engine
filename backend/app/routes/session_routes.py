@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime
 from app.services.session_service import SessionService
 
-session_bp = Blueprint("sessions", __name__)
+session_bp = Blueprint("sessions", __name__, url_prefix="/api")
 
 
 @session_bp.route("/topics/<int:topic_id>/sessions", methods=["POST"])
